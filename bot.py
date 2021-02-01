@@ -18,13 +18,33 @@ async def on_message(message):
         return
 
 
+newuserdm = "Welcome!"
+
+
 # help printout
 # TODO: make a help message.
 @client.event
 async def on_message(message):
-    await message.channel.send(
-        "Nothing here yet!"
-    )
+    if message.content.startswith("!help"):
+        await message.channel.send(
+            "Nothing here yet!"
+        )
+
+
+# stat lookup command
+@client.event
+async def on_message(message):
+    if message.content.startswith("!stat"):
+        await message.channel.send(
+            "Nothing here yet!"
+        )
+
+
+# send welcome dm to new users!
+# TODO: testing
+@client.event
+async def on_member_join(member):
+    await member.send(newuserdm)
 
 
 client.run('CLIENTCODEHERE')
