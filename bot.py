@@ -51,4 +51,4 @@ async def on_member_join(member):
     await member.send(newuserdm)
 
 
-client.run('NjM4MTIxNzA3NTUwNTM5Nzc4.XbYHJg.tflWbIeXRkgCjC9b90exZxwyBNs')
+client.run('CODEGOESHERE')
