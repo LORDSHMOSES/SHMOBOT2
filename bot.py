@@ -1,5 +1,7 @@
 # import libraries
 import discord
+import r6sapi
+import getpass
 
 # get client object
 client = discord.Client()
@@ -9,7 +11,9 @@ client = discord.Client()
 @client.event
 async def on_ready():
     print('Logged in as {0.user}'.format(client))
-
+    # get uplay username and password for API
+    username = input("Username: ")
+    password = getpass.getpass('Password: ')
 
 # prevent bot from reading its own messages
 @client.event
@@ -47,4 +51,4 @@ async def on_member_join(member):
     await member.send(newuserdm)
 
 
-client.run('CLIENTCODEHERE')
+client.run('NjM4MTIxNzA3NTUwNTM5Nzc4.XbYHJg.tflWbIeXRkgCjC9b90exZxwyBNs')
