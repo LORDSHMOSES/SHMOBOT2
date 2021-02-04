@@ -65,4 +65,4 @@ async def on_ready():
     print('Logged in as {0.user}'.format(bot))
 
 
-bot.run('NjM4MTIxNzA3NTUwNTM5Nzc4.XbYHJg.sLxq-yUmfh4wdIMnNJ9RJEMjxJE')
+bot.run('CLIENTCODEHERE')
