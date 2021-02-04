@@ -1,4 +1,5 @@
 # import libraries
+import discord
 from discord.ext import commands
 import r6sapi
 import getpass
@@ -16,21 +17,41 @@ newuserdm = "Welcome!"
 
 # stat lookup command
 @bot.command(help="Looks up the stats for a player")
-async def stat(ctx):
-    await ctx.send(
-        "Nothing here yet!"
-    )
+async def stat(ctx, arg):
+    #TODO:add handler for null arg
     auth = r6sapi.Auth(username, password)
-    # This is a test to prove the API works in this context.
-    player = await auth.get_player("LORD_SHMOSES", r6sapi.Platforms.UPLAY)
-    operator = await player.get_operator("mute")
-    print(operator.kills)
-    # TODO: gather stats here.
+    player = await auth.get_player(arg, r6sapi.Platforms.UPLAY)
+    await r6sapi.Player.load_general(player)
+    region = r6sapi.RankedRegions.NA
+    Rank = await player.get_rank(region)
+    kills = player.kills
+    deaths = player.deaths
+    kd = (round((kills / deaths), 2))
+    mmr = Rank.mmr
+    rankurl = Rank.get_icon_url()
+    embed = discord.Embed(colour=discord.Colour(0xe75e15), description="Here are the stats for %s" % arg)
+    staturlbase = "https://tabstats.com/siege/search/uplay/replace"
+    newurl = staturlbase.replace('replace', arg)
+    embed.set_thumbnail(url=rankurl)
+    embed.set_author(name=arg, url=newurl)
+
+    embed.add_field(name="K/D", value=kd)
+    embed.add_field(name="Top Operators", value="op1, op2, op3")
+    embed.add_field(name="Current MMR", value=mmr)
+
+    await ctx.send(embed=embed)
     await auth.close()
 
 
-# Events
+# init role command
+@bot.command(help="Init role command ADMIN ONLY!!!")
+async def initroles(ctx):
+    await ctx.send(
+        "Nothing here yet!"
+    )
 
+
+# Events
 # send welcome dm to new users!
 # TODO: testing
 @bot.event
@@ -44,4 +65,4 @@ async def on_ready():
     print('Logged in as {0.user}'.format(bot))
 
 
-bot.run('TOKENGOESHERE')
+bot.run('NjM4MTIxNzA3NTUwNTM5Nzc4.XbYHJg.sLxq-yUmfh4wdIMnNJ9RJEMjxJE')
