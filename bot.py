@@ -18,31 +18,41 @@ newuserdm = "Welcome!"
 # stat lookup command
 @bot.command(help="Looks up the stats for a player")
 async def stat(ctx, arg):
-    # TODO:add handler for null arg
-    auth = r6sapi.Auth(username, password)
-    player = await auth.get_player(arg, r6sapi.Platforms.UPLAY)
-    await r6sapi.Player.load_general(player)
-    await r6sapi.Player.load_queues(player)
-    region = r6sapi.RankedRegions.NA
-    Rank = await player.get_rank(region)
-    rankstats = player.ranked
-    rankkd = (round((rankstats.kills / rankstats.deaths), 2))
-    kd = (round((player.kills / player.deaths), 2))
-    mmr = Rank.mmr
-    rankurl = Rank.get_icon_url()
-    embed = discord.Embed(colour=discord.Colour(0xe75e15), description="Here are the stats for %s" % arg)
-    staturlbase = "https://tabstats.com/siege/search/uplay/replace"
-    newurl = staturlbase.replace('replace', arg)
-    embed.set_thumbnail(url=rankurl)
-    embed.set_author(name=arg, url=newurl)
+    if arg == "Spencer'sGirlfriend":
+        await ctx.send("Spencer doesn't have a girlfriend LOL")
+    else:
+        # TODO:add handler for null arg
+        auth = r6sapi.Auth(username, password)
+        player = await auth.get_player(arg, r6sapi.Platforms.UPLAY)
+        await r6sapi.Player.load_general(player)
+        await r6sapi.Player.load_queues(player)
+        region = r6sapi.RankedRegions.NA
+        Rank = await player.get_rank(region)
+        rankstats = player.ranked
+        if rankstats.deaths == 0:
+            rankkd = 0
+        else:
+            rankkd = (round((rankstats.kills / rankstats.deaths), 2))
+        if player.deaths == 0:
+            kd = 0
+        else:
+            kd = (round((player.kills / player.deaths), 2))
+        mmr = Rank.mmr
+        rankurl = Rank.get_icon_url()
+        embed = discord.Embed(colour=discord.Colour(0xe75e15), description="Here are the stats for %s" % arg)
+        staturlbase = "https://tabstats.com/siege/search/uplay/replace"
+        newurl = staturlbase.replace('replace', arg)
 
-    embed.add_field(name="Overall K/D", value=kd)
-    embed.add_field(name="Ranked K/D", value=rankkd)
-    embed.add_field(name="Top Operators", value="op1, op2, op3")
-    embed.add_field(name="Current MMR", value=mmr)
+        # embed here
+        embed.set_thumbnail(url=rankurl)
+        embed.set_author(name=arg, url=newurl)
+        embed.add_field(name="Overall K/D", value=kd)
+        embed.add_field(name="Ranked K/D", value=rankkd)
+        embed.add_field(name="Top Operators", value="op1, op2, op3")
+        embed.add_field(name="Current MMR", value=mmr)
 
-    await ctx.send(embed=embed)
-    await auth.close()
+        await ctx.send(embed=embed)
+        await auth.close()
 
 
 # init role command
@@ -67,4 +77,4 @@ async def on_ready():
     print('Logged in as {0.user}'.format(bot))
 
 
-bot.run('INSERTCODEHERE')
+bot.run('insertcodehere')
