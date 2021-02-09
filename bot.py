@@ -4,6 +4,14 @@ from discord.ext import commands
 import r6sapi
 import getpass
 
+# list of all ops
+opnamelist = ["aruni", "zero", "ace", "melusi", "oryx", "iana", "wamai", "kali", "amaru", "goyo", "nokk", "warden",
+              "mozzie", "gridlock", "nomad", "kaid", "clash", "maverick", "maestro", "alibi", "lion", "finka", "vigil",
+              "dokkaebi", "zofia", "ela", "ying", "lesion", "mira", "jackal", "hibana", "echo",
+              "caveira", "capitao", "blackbeard", "valkyrie", "buck", "frost", "mute", "sledge", "smoke", "thatcher",
+              "ash", "castle", "pulse", "thermite", "montagne", "twitch",
+              "doc", "rook", "jager", "bandit", "blitz", "iq", "fuze", "glaz", "tachanka", "kapkan"]
+
 # get uplay username and password for API
 username = input("Username: ")
 password = getpass.getpass('Password: ')
@@ -26,6 +34,28 @@ async def stat(ctx, arg):
         player = await auth.get_player(arg, r6sapi.Platforms.UPLAY)
         await r6sapi.Player.load_general(player)
         await r6sapi.Player.load_queues(player)
+        n = len(opnamelist)
+        op1 = 'NaN'
+        op1time = 0
+        op2 = 'NaN'
+        op2time = 0
+        op3 = 'NaN'
+        op3time = 0
+        for i in range(n):
+            curop = await player.get_operator(opnamelist[i])
+            if curop.time_played > op1time:
+                op1 = curop.name
+                op1time = curop.time_played
+            elif curop.time_played > op2time:
+                op2 = curop.name
+                op2time = curop.time_played
+            elif curop.time_played > op3time:
+                op3 = curop.name
+                op3time = curop.time_played
+        op1.capitalize()
+        op2.capitalize()
+        op3.capitalize()
+        combine = op1 + ', ' + op2 + ', ' + op3
         region = r6sapi.RankedRegions.NA
         Rank = await player.get_rank(region)
         rankstats = player.ranked
@@ -48,7 +78,7 @@ async def stat(ctx, arg):
         embed.set_author(name=arg, url=newurl)
         embed.add_field(name="Overall K/D", value=kd)
         embed.add_field(name="Ranked K/D", value=rankkd)
-        embed.add_field(name="Top Operators", value="op1, op2, op3")
+        embed.add_field(name="Top Operators", value=combine)
         embed.add_field(name="Current MMR", value=mmr)
 
         await ctx.send(embed=embed)
