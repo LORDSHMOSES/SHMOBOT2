@@ -36,13 +36,17 @@ async def stat(ctx, arg):
         await r6sapi.Player.load_general(player)
         await r6sapi.Player.load_queues(player)
         n = len(opnamelist)
-        oparr = []
+        sorted_dict = {}
+        PTdict = {}
         for i in range(n):
-            temp = await player.get_operator(opnamelist[i])
-            oparr.append(temp)
+            operator = await player.get_operator(opnamelist[i])
+            PTdict[operator.name] = operator.time_played
 
-        oparr.sort(key=lambda x: x.time_played, reverse=True)
-        combine = oparr[1] + ', ' + oparr[2] + ', ' + oparr[3]
+        sorted_keys = sorted(PTdict, key=PTdict.get)
+        for w in sorted_keys:
+            sorted_dict[w] = PTdict[w]
+        j = len(sorted_keys)
+        combine = sorted_keys[j-1] + ', ' + sorted_keys[j-2] + ', ' + sorted_keys[j-3]
         region = r6sapi.RankedRegions.NA
         Rank = await player.get_rank(region)
         rankstats = player.ranked
