@@ -12,6 +12,7 @@ opnamelist = ["aruni", "zero", "ace", "melusi", "oryx", "iana", "wamai", "kali",
               "ash", "castle", "pulse", "thermite", "montagne", "twitch",
               "doc", "rook", "jager", "bandit", "blitz", "iq", "fuze", "glaz", "tachanka", "kapkan"]
 
+
 # get uplay username and password for API
 username = input("Username: ")
 password = getpass.getpass('Password: ')
@@ -35,27 +36,13 @@ async def stat(ctx, arg):
         await r6sapi.Player.load_general(player)
         await r6sapi.Player.load_queues(player)
         n = len(opnamelist)
-        op1 = 'NaN'
-        op1time = 0
-        op2 = 'NaN'
-        op2time = 0
-        op3 = 'NaN'
-        op3time = 0
+        oparr = []
         for i in range(n):
-            curop = await player.get_operator(opnamelist[i])
-            if curop.time_played > op1time:
-                op1 = curop.name
-                op1time = curop.time_played
-            elif curop.time_played > op2time:
-                op2 = curop.name
-                op2time = curop.time_played
-            elif curop.time_played > op3time:
-                op3 = curop.name
-                op3time = curop.time_played
-        op1.capitalize()
-        op2.capitalize()
-        op3.capitalize()
-        combine = op1 + ', ' + op2 + ', ' + op3
+            temp = await player.get_operator(opnamelist[i])
+            oparr.append(temp)
+
+        oparr.sort(key=lambda x: x.time_played, reverse=True)
+        combine = oparr[1] + ', ' + oparr[2] + ', ' + oparr[3]
         region = r6sapi.RankedRegions.NA
         Rank = await player.get_rank(region)
         rankstats = player.ranked
